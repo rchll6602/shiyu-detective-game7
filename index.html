@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>词汇分类大挑战｜舌尖上的马来西亚</title>
+<style>
+:root{--red:#9c2624;--dark:#492117;--gold:#eab94c;--cream:#fff3d3;--ink:#38231d}
+*{box-sizing:border-box}body{margin:0;color:var(--ink);font-family:"Noto Sans SC","Microsoft YaHei",sans-serif;background:radial-gradient(circle at 15% 10%,#fff4d3,#e8b76d 65%,#b9633c);min-height:100vh}
+button{font:inherit;cursor:pointer}button:focus-visible,[tabindex]:focus-visible{outline:3px solid #167cc9;outline-offset:3px}
+.shell{max-width:1000px;margin:auto;padding:18px 14px 30px}
+header{text-align:center}.eyebrow{font-size:12px;letter-spacing:.25em;font-weight:900;color:#7c3b2c}
+h1{margin:7px auto 4px;color:#fff7dc;text-shadow:0 3px 0 #672217,0 5px 12px #431a14;background:linear-gradient(135deg,#8e251e,#c6422a,#7f1e20);border:4px solid #f7d78a;border-radius:17px;padding:12px 10px;max-width:770px;box-shadow:0 6px 0 #693323;font-size:clamp(25px,5.5vw,41px)}
+.sub{font-weight:800;margin:12px 0 14px}.sub strong{background:#ffe35b;padding:2px 8px;border-radius:6px}
+.panel{border:5px solid #4a2826;border-radius:26px;overflow:hidden;background:#f7d9a4;box-shadow:0 9px 0 #734a3b,0 15px 25px #3d1c1840;position:relative}
+.scene{position:relative;min-height:410px;background:linear-gradient(#54bce1 0 35%,#b3e5cf 35% 55%,#d6aa72 55% 100%);overflow:hidden}
+.scene:before{content:"";position:absolute;left:-2%;top:13%;width:35%;height:49%;background:linear-gradient(140deg,#a73e26 0 15%,#f4d48a 15% 22%,#f9e2b5 22% 70%,#8b472f 70%);clip-path:polygon(0 20%,55% 0,100% 28%,100% 100%,0 100%);opacity:.8}
+.scene:after{content:"";position:absolute;right:-2%;top:12%;width:35%;height:50%;background:linear-gradient(220deg,#8b3d25 0 18%,#f9db98 18% 24%,#f7dca5 24% 70%,#99512c 70%);clip-path:polygon(0 28%,45% 0,100% 20%,100% 100%,0 100%);opacity:.85}
+.palm{position:absolute;font-size:clamp(55px,12vw,110px);top:-12px;z-index:1;filter:drop-shadow(0 4px 2px #245d3c55)}.palm.left{left:0}.palm.right{right:0;transform:scaleX(-1)}
+.scene-title{position:relative;z-index:2;text-align:center;margin:13px auto 5px;width:max-content;max-width:90%;padding:7px 22px;background:linear-gradient(#8e281e,#c84c28);color:#fff7df;border:3px solid #f3c75b;border-radius:12px;box-shadow:0 3px 0 #54231b;font-size:clamp(18px,3vw,25px);font-weight:900}
+.hud{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:8px;max-width:700px;margin:10px auto;background:#fff5d6ed;border:2px solid #9e6a3a;border-radius:14px;padding:8px 12px;font-weight:900;flex-wrap:wrap}
+.hud span{white-space:nowrap}.timer.warn{color:#c02d22;animation:pulse .7s infinite alternate}@keyframes pulse{to{opacity:.5}}
+.baskets{position:relative;z-index:3;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;padding:28px 14px 22px;max-width:900px;margin:auto}
+.basket{position:relative;border:3px solid #81502a;background:linear-gradient(#fff2bc 0 36%,#c88740 36% 100%);border-radius:17px 17px 30px 30px;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:9px 3px 6px;box-shadow:inset 0 -9px 0 #8e5329,0 5px 0 #684225;transition:transform .13s,filter .13s}
+.basket:before{content:"";position:absolute;inset:38% 3px 8px;background:repeating-linear-gradient(0deg,transparent 0 12px,#7c482b7a 13px 15px),repeating-linear-gradient(90deg,transparent 0 17px,#7041227a 18px 20px);border-radius:5px 5px 23px 23px;pointer-events:none}
+.basket.over,.basket.selected{transform:translateY(-6px);filter:brightness(1.15);outline:4px solid #ffdf4c;outline-offset:1px}
+.basket .symbol,.basket .name,.basket .count{position:relative;z-index:1}.symbol{font-size:clamp(23px,4vw,34px)}.name{font-size:clamp(13px,2.5vw,19px);font-weight:1000;color:#5d241c;background:#fff5d9;border:2px solid #a3652c;border-radius:10px;padding:4px 2px;width:100%;text-align:center;white-space:nowrap}.count{margin-top:auto;background:#fff5d9;border-radius:12px;padding:3px 9px;font-weight:900;font-size:12px}
+.lower{padding:14px;background:linear-gradient(150deg,#fdf0c9,#f6cf90)}
+.instruction{text-align:center;font-weight:900;font-size:clamp(15px,2.5vw,19px);margin:0 0 10px}
+.tray{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;min-height:116px;align-items:flex-start}
+.tile{touch-action:none;user-select:none;-webkit-user-select:none;background:linear-gradient(#fff7df,#f4d598);border:2px solid #a8733a;border-radius:12px;box-shadow:0 4px 0 #b17d47;color:#3f2a22;font-weight:900;padding:11px 16px;min-width:90px;min-height:45px;transition:opacity .12s,transform .12s;position:relative;z-index:5}
+.tile.chosen{outline:4px solid #d64c29;transform:translateY(-3px)}.tile.dragging{opacity:.32}.tile.done{display:none}
+.drag-ghost{position:fixed;pointer-events:none;z-index:9999;opacity:.95;transform:translate(-50%,-50%) rotate(-3deg);box-shadow:0 10px 30px #321b1880}
+.actions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:15px 0}
+.primary,.secondary{border:3px solid #f5d077;border-radius:999px;padding:12px 26px;font-weight:1000;box-shadow:0 5px 0 #6e2a1d}
+.primary{background:linear-gradient(#d84427,#9e251c);color:#fff9df;font-size:20px}.secondary{background:#fff0c9;color:#73342b}
+.feedback{min-height:46px;text-align:center;font-weight:900;padding:9px 12px;background:#fff8e4;border-radius:12px;border:2px dashed #bf9154}
+.legend{text-align:center;color:#6c3e2e;font-size:13px;margin-top:10px;line-height:1.7}
+.modal{position:fixed;inset:0;background:#26110dbb;display:flex;align-items:center;justify-content:center;padding:15px;z-index:1000}
+.modal[hidden]{display:none}.dialog{width:min(520px,100%);max-height:90vh;overflow:auto;background:linear-gradient(#fff7df,#f1ce8f);border:6px solid #d29a42;border-radius:25px;padding:24px;text-align:center;box-shadow:0 12px 0 #6d3427}
+.dialog h2{color:#95281f;margin:8px 0;font-size:28px}.dialog p{line-height:1.7}.seal{width:160px;height:160px;border-radius:50%;margin:18px auto;background:radial-gradient(circle,#a53b29,#7e1e21);border:8px double #f8d477;box-shadow:0 5px 18px #5c211b70;color:#ffe8a0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;transform:rotate(-8deg)}.seal b{font-size:22px}.seal small{margin-top:7px}
+.hidden{display:none!important}footer{text-align:center;margin-top:22px;font-size:13px;color:#6e3b2c}
+@media(max-width:570px){.shell{padding:9px 7px 22px}.scene{min-height:310px}.baskets{gap:4px;padding:20px 5px 13px}.basket{min-height:126px;border-width:2px;border-radius:11px 11px 20px 20px}.name{font-size:12px!important;letter-spacing:-.5px}.symbol{font-size:23px}.count{font-size:10px;padding:2px 4px}.tile{padding:10px 12px;min-width:75px}.hud{margin:8px 6px;font-size:12px;padding:7px}.lower{padding:12px 8px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="shell">
+<header><div class="eyebrow">舌尖上的马来西亚 · 终极任务</div><h1>🎮 互动小游戏：词汇分类大挑战</h1><p class="sub">把生活词语送回正确的词汇类别，看看你能否成为 <strong>「马来西亚语言小达人」！</strong></p></header>
+<section class="panel" aria-label="词汇分类游戏">
+<div class="scene"><div class="palm left">🌴</div><div class="palm right">🌴</div><div class="scene-title">👑 词汇分类大挑战</div>
+<div class="hud"><span>⏳ <span id="time">02:00</span></span><span>🏅 得分 <span id="score">0</span></span><span>📚 已归档 <span id="progress">0</span>/15</span></div>
+<div class="baskets" id="baskets">
+<button type="button" class="basket" data-cat="古语词"><span class="symbol">📜</span><span class="name">古语词</span><span class="count">0 / 3</span></button>
+<button type="button" class="basket" data-cat="新造词"><span class="symbol">💡</span><span class="name">新造词</span><span class="count">0 / 3</span></button>
+<button type="button" class="basket" data-cat="方言词"><span class="symbol">💬</span><span class="name">方言词</span><span class="count">0 / 3</span></button>
+<button type="button" class="basket" data-cat="外来词"><span class="symbol">🌐</span><span class="name">外来词</span><span class="count">0 / 3</span></button>
+<button type="button" class="basket" data-cat="网络词"><span class="symbol">📶</span><span class="name">网络词</span><span class="count">0 / 3</span></button>
+</div></div>
+<div class="lower">
+<p class="instruction" id="instruction">点击「开始游戏」，再拖动词语到正确的篮子！</p>
+<div class="tray" id="tray" aria-label="待分类词语"></div>
+<div class="actions"><button type="button" class="primary" id="start">▶ 点击开始游戏</button><button type="button" class="secondary hidden" id="restart">↻ 重新挑战</button><button type="button" class="secondary" id="return">📖 关闭游戏 · 返回电子书</button></div>
+<div class="feedback" id="feedback" role="status" aria-live="polite">✨ 也可以先点击词语，再点击分类篮子，手机操作更方便。</div>
+<div class="legend">规则：限时 2 分钟 · 每题正确 +10 分 · 答错不扣分，可重试 · 全部归档额外 +50 分（满分 200 分）</div>
+</div></section><footer>五大类别：古语词 · 新造词 · 方言词 · 外来词 · 网络词</footer></main>
+<div class="modal" id="result" hidden><div class="dialog"><h2 id="resultTitle">挑战完成</h2><div class="seal"><b>食语侦探</b><small>马来西亚语言<br>小达人</small></div><p id="resultText"></p><button type="button" class="primary" id="again">再挑战一次</button><button type="button" class="secondary" id="resultReturn">📖 返回原本电子书</button></div></div>
+<div class="modal" id="returnModal" hidden><div class="dialog"><h2>📖 返回电子书</h2><p>浏览器没有自动关闭游戏标签页。请直接关闭这个标签页，即可回到原本的 Heyzine 阅读位置；也可以点击下面的链接打开电子书。</p><button type="button" class="primary" id="dismissReturn">继续游戏</button><a class="secondary" style="display:inline-block;text-decoration:none;margin-top:12px" href="https://heyzine.com/flip-book/93e87995ba.html" target="_blank" rel="noopener">打开 Heyzine 电子书</a></div></div>
+<script>
+"use strict";
+const WORDS=[
+ {word:"食",cat:"古语词",note:"「食」是古代汉语中常见的饮食用字。"},
+ {word:"饮",cat:"古语词",note:"「饮」是古代汉语中表示喝、饮品的用字。"},
+ {word:"馔",cat:"古语词",note:"「馔」指食物、菜肴，常见于古典文献。"},
+ {word:"椰浆饭汉堡",cat:"新造词",note:"把传统椰浆饭与汉堡组合而成的新式食品名称。"},
+ {word:"参巴披萨",cat:"新造词",note:"以「参巴」与「披萨」组合，形成融合料理名称。"},
+ {word:"榴莲披萨",cat:"新造词",note:"用「榴莲」与「披萨」组合，命名新式融合食品。"},
+ {word:"粿条",cat:"方言词",note:"「粿条」保留闽南等方言饮食词汇特色。"},
+ {word:"锅气",cat:"方言词",note:"「锅气」在粤语饮食语境中常用于形容热炒香气与火候。"},
+ {word:"食饱未？",cat:"方言词",note:"「食饱未？」是闽南语等方言中常见的问候表达。"},
+ {word:"kopitiam",cat:"外来词",note:"「kopitiam」由马来语 kopi 与福建话 tiam 组合而成，是跨语言混合词。"},
+ {word:"café",cat:"外来词",note:"「café」是外语词汇，在本地饮食场景中常见。"},
+ {word:"buffet",cat:"外来词",note:"「buffet」是外语借词，常用来表示自助餐。"},
+ {word:"打卡",cat:"网络词",note:"在网络语境中，「打卡」常指到店拍照并分享。"},
+ {word:"yyds",cat:"网络词",note:"「yyds」是「永远的神」的网络缩写。"},
+ {word:"hhh",cat:"网络词",note:"「hhh」常用于网络聊天中表达笑声。"}
+];
+const $=id=>document.getElementById(id);
+const book="https://heyzine.com/flip-book/93e87995ba.html";
+let active=false,remaining=120,score=0,solved=new Set(),selected=null,timerId=null,drag=null,ghost=null;
+function shuffle(a){let b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+function feedback(s){$("feedback").textContent=s}
+function clock(){let m=Math.floor(remaining/60),s=remaining%60;$("time").textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");$("time").parentElement.classList.toggle("warn",remaining<=20)}
+function render(){const tray=$("tray");tray.replaceChildren();for(const item of shuffle(WORDS.filter(x=>!solved.has(x.word)))){const b=document.createElement("button");b.type="button";b.className="tile";b.textContent=item.word;b.dataset.word=item.word;b.addEventListener("click",()=>selectWord(item.word));b.addEventListener("pointerdown",startDrag);tray.append(b)}$("score").textContent=score;$("progress").textContent=solved.size;document.querySelectorAll(".basket").forEach(b=>{b.querySelector(".count").textContent=WORDS.filter(w=>w.cat===b.dataset.cat&&solved.has(w.word)).length+" / 3";b.classList.toggle("selected",!!selected)})}
+function selectWord(word){if(!active||solved.has(word))return;selected=word;document.querySelectorAll(".tile").forEach(t=>t.classList.toggle("chosen",t.dataset.word===word));feedback("已选「"+word+"」。现在点击上方对应的分类篮子，或直接拖进去。")}
+function submit(word,cat){if(!active||!word)return;const item=WORDS.find(x=>x.word===word);if(!item||solved.has(word))return;if(item.cat!==cat){feedback("❌「"+word+"」不属于「"+cat+"」，再试试看！");return}solved.add(word);score+=10;selected=null;feedback("✅ 正确！"+item.note);if(solved.size===WORDS.length){score+=50;render();finish(true);return}render()}
+function start(){if(timerId)clearInterval(timerId);active=true;remaining=120;score=0;solved.clear();selected=null;drag=null;removeGhost();$("result").hidden=true;$("returnModal").hidden=true;$("start").classList.add("hidden");$("restart").classList.remove("hidden");$("instruction").textContent="拖动词语到分类篮子，或点击词语后点击篮子";feedback("🎯 调查开始！15 张词语卡，限时 120 秒。");clock();render();timerId=setInterval(()=>{if(!active)return;remaining=Math.max(0,remaining-1);clock();if(remaining===0)finish(false)},1000)}
+function finish(completed){active=false;if(timerId){clearInterval(timerId);timerId=null}removeGhost();$("resultTitle").textContent=completed?"🎉 终极挑战成功！":"⏰ 时间到！";$("resultText").textContent="已正确归档 "+solved.size+" / 15 个词语，获得 "+score+" / 200 分。"+(completed?"恭喜获得「马来西亚语言小达人」称号！":"再试一次，争取解锁全部词语！");$("result").hidden=false;$("start").classList.remove("hidden");$("start").textContent="▶ 再玩一次"}
+function removeGhost(){if(ghost){ghost.remove();ghost=null}document.querySelectorAll(".basket").forEach(b=>b.classList.remove("over"));document.querySelectorAll(".tile").forEach(t=>t.classList.remove("dragging"))}
+function startDrag(e){if(!active||e.button!==0&&e.pointerType==="mouse")return;const el=e.currentTarget;drag={word:el.dataset.word,x:e.clientX,y:e.clientY,pointerId:e.pointerId,moved:false,el};el.setPointerCapture(e.pointerId)}
+function moveDrag(e){if(!drag||e.pointerId!==drag.pointerId)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(!drag.moved&&Math.hypot(dx,dy)>9){drag.moved=true;drag.el.classList.add("dragging");ghost=drag.el.cloneNode(true);ghost.classList.add("drag-ghost");ghost.classList.remove("dragging");ghost.removeAttribute("id");document.body.append(ghost)}if(!drag.moved)return;e.preventDefault();ghost.style.left=e.clientX+"px";ghost.style.top=e.clientY+"px";const basket=document.elementFromPoint(e.clientX,e.clientY)?.closest(".basket");document.querySelectorAll(".basket").forEach(b=>b.classList.toggle("over",b===basket))}
+function endDrag(e){if(!drag||e.pointerId!==drag.pointerId)return;const d=drag;drag=null;if(d.moved){const basket=document.elementFromPoint(e.clientX,e.clientY)?.closest(".basket");removeGhost();if(basket)submit(d.word,basket.dataset.cat);else feedback("请把词语放到五个分类篮子中的一个。")} }
+document.addEventListener("pointermove",moveDrag,{passive:false});document.addEventListener("pointerup",endDrag);document.addEventListener("pointercancel",()=>{drag=null;removeGhost()});
+document.querySelectorAll(".basket").forEach(b=>b.addEventListener("click",()=>{if(!active){feedback("请先点击「开始游戏」。");return}if(!selected){feedback("请先点击或拖动下方一张词语卡。");return}submit(selected,b.dataset.cat)}));
+function goBack(){try{window.close()}catch(e){}setTimeout(()=>{if(!document.hidden)$("returnModal").hidden=false},350)}
+$("start").addEventListener("click",start);$("restart").addEventListener("click",start);$("again").addEventListener("click",start);$("return").addEventListener("click",goBack);$("resultReturn").addEventListener("click",goBack);$("dismissReturn").addEventListener("click",()=>$("returnModal").hidden=true);
+clock();
+</script>
+</body></html>
